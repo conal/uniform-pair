@@ -15,7 +15,7 @@
 -- morphism principle.
 ----------------------------------------------------------------------
 
-module Data.UniformPair (P(..), fstP,sndP, firstP, secondP, compareSwap) where
+module Data.UniformPair (Pair(..), fstP,sndP, firstP, secondP, compareSwap) where
 
 import Data.Monoid (Monoid(..),(<>))
 import Data.Functor ((<$>))
@@ -26,37 +26,37 @@ import Control.Applicative (Applicative(..)) -- ,liftA2
 infix 1 :#
 
 -- | Uniform pairs
-data P a = a :# a deriving (Show, Functor, Foldable,Traversable)
+data Pair a = a :# a deriving (Show, Functor, Foldable,Traversable)
 
--- instance Traversable P where sequenceA (u :# v) = (:#) <$> u <*> v
+-- instance Traversable Pair where sequenceA (u :# v) = (:#) <$> u <*> v
 
-fstP :: P a -> a
+fstP :: Pair a -> a
 fstP (a :# _) = a
 
-sndP :: P a -> a
+sndP :: Pair a -> a
 sndP (_ :# b) = b
 
-firstP, secondP :: (a -> a) -> (P a -> P a)
+firstP, secondP :: (a -> a) -> (Pair a -> Pair a)
 firstP  f (a :# b) = f a :# b
 secondP g (a :# b) = a :# g b
 
--- unzipP :: Functor f => f (P a) -> P (f a)
+-- unzipP :: Functor f => f (Pair a) -> Pair (f a)
 -- unzipP ps = (fstP <$> ps) :# (sndP <$> ps)
 -- unzipP = liftA2 (:#) (fmap fstP) (fmap sndP)
 
-instance Monoid a => Monoid (P a) where
+instance Monoid a => Monoid (Pair a) where
   mempty = mempty :# mempty
   (a :# b) `mappend` (c :# d) = (a <> c) :# (b <> d)  -- exchange
 
-instance Applicative P where
+instance Applicative Pair where
   pure a = a :# a
   (f :# g) <*> (a :# b) = f a :# g b
 
-instance Monad P where
+instance Monad Pair where
   return = pure
   m >>= f = joinP (f <$> m)
 
-joinP :: P (P a) -> P a
+joinP :: Pair (Pair a) -> Pair a
 joinP ((a :# _) :# (_ :# d)) = a :# d
 
 -- so
@@ -67,6 +67,6 @@ joinP ((a :# _) :# (_ :# d)) = a :# d
 --      (_ :# d) = f b
 
 -- Compare and swap
-compareSwap :: Ord a => P a -> P a
+compareSwap :: Ord a => Pair a -> Pair a
 compareSwap (a :# b) | a <= b    = a :# b
                      | otherwise = b :# a
