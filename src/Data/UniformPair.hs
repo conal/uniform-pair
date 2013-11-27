@@ -23,12 +23,17 @@ import Data.Foldable (Foldable(..))
 import Data.Traversable (Traversable(..))
 import Control.Applicative (Applicative(..)) -- ,liftA2
 
+import Text.ShowF (ShowF(..))
+
 infix 1 :#
 
 -- | Uniform pairs
 data Pair a = a :# a deriving (Show, Functor, Foldable,Traversable)
 
 -- instance Traversable Pair where sequenceA (u :# v) = (:#) <$> u <*> v
+
+instance ShowF Pair where
+  showsPrecF = showsPrec
 
 fstP :: Pair a -> a
 fstP (a :# _) = a
