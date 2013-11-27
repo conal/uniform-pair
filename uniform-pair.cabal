@@ -13,6 +13,7 @@ License:             BSD3
 License-File:        COPYING
 Stability:           experimental
 build-type:          Simple
+data-files:          changelog
 
 source-repository head
   type:     git
