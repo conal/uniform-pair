@@ -1,5 +1,5 @@
 Name:                uniform-pair
-Version:             0.1.1
+Version:             0.1.2
 Cabal-Version:       >= 1.6
 Synopsis:            Uniform pairs with class instances
 Category:            Data
@@ -8,6 +8,7 @@ Description:
 Author:              Conal Elliott
 Maintainer:          conal@conal.net
 Copyright:           (c) 2013 by Conal Elliott
+Homepage:            https://github.com/conal/uniform-pair/
 License:             BSD3
 License-File:        COPYING
 Stability:           experimental
