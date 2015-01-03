@@ -1,3 +1,7 @@
+0.1.5:
+
+*   Derives Eq & Ord. Thanks to George Wilson.
+
 0.1.4:
 
 *   Added changelog
