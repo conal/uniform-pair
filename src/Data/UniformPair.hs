@@ -28,7 +28,7 @@ import Text.ShowF (ShowF(..))
 infix 1 :#
 
 -- | Uniform pairs
-data Pair a = a :# a deriving (Show, Functor, Foldable,Traversable)
+data Pair a = a :# a deriving (Eq, Ord, Show, Functor, Foldable,Traversable)
 
 -- instance Traversable Pair where sequenceA (u :# v) = (:#) <$> u <*> v
 
