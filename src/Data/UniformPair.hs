@@ -15,7 +15,9 @@
 -- morphism principle.
 ----------------------------------------------------------------------
 
-module Data.UniformPair (Pair(..), fstP,sndP, firstP, secondP, compareSwap) where
+module Data.UniformPair
+  ( Pair(..), fstP,sndP, firstP, secondP, updateP, compareSwap
+  ) where
 
 import Data.Monoid (Monoid(..),(<>))
 import Data.Functor ((<$>))
@@ -70,6 +72,17 @@ joinP ((a :# _) :# (_ :# d)) = a :# d
 --    where
 --      (c :# _) = f a
 --      (_ :# d) = f b
+
+-- Update a component, indexing by 'False' for the first element and 'True' for
+-- the second.
+updateP :: Bool -> (a -> a) -> Pair a -> Pair a
+updateP False f (a :# b) = f a :# b
+updateP True  f (a :# b) = a :# f b
+
+-- -- Untrie. What argument order do I want here?
+-- getP :: Pair a -> Bool -> a
+-- getP (a :# _) False = a
+-- getP (_ :# b) True  = b
 
 -- Compare and swap
 compareSwap :: Ord a => Pair a -> Pair a
