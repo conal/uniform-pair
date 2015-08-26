@@ -16,7 +16,7 @@
 ----------------------------------------------------------------------
 
 module Data.UniformPair
-  ( Pair(..), fstP,sndP, firstP, secondP, updateP, compareSwap
+  ( Pair(..), fstP,sndP, firstP, secondP, getP, onElemP, compareSwap
   ) where
 
 import Data.Monoid (Monoid(..),(<>))
@@ -73,16 +73,17 @@ joinP ((a :# _) :# (_ :# d)) = a :# d
 --      (c :# _) = f a
 --      (_ :# d) = f b
 
--- Update a component, indexing by 'False' for the first element and 'True' for
+-- | Update a component, indexing by 'False' for the first element and 'True' for
 -- the second.
-updateP :: Bool -> (a -> a) -> Pair a -> Pair a
-updateP False f (a :# b) = f a :# b
-updateP True  f (a :# b) = a :# f b
+onElemP :: Bool -> (a -> a) -> Pair a -> Pair a
+onElemP False f (a :# b) = f a :# b
+onElemP True  f (a :# b) = a :# f b
 
--- -- Untrie. What argument order do I want here?
--- getP :: Pair a -> Bool -> a
--- getP (a :# _) False = a
--- getP (_ :# b) True  = b
+-- | Extract an element, indexing by 'False' for the first element and 'True'
+-- for the second.
+getP :: Bool -> Pair a -> a
+getP False (a :# _) = a
+getP True  (_ :# b) = b
 
 -- Compare and swap
 compareSwap :: Ord a => Pair a -> Pair a
