@@ -1,5 +1,5 @@
 Name:                uniform-pair
-Version:             0.1.7
+Version:             0.1.8
 Cabal-Version:       >= 1.6
 Synopsis:            Uniform pairs with class instances
 Category:            Data

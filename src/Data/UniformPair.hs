@@ -76,8 +76,15 @@ joinP ((a :# _) :# (_ :# d)) = a :# d
 -- | Update a component, indexing by 'False' for the first element and 'True' for
 -- the second.
 onElemP :: Bool -> (a -> a) -> Pair a -> Pair a
-onElemP False f (a :# b) = f a :# b
-onElemP True  f (a :# b) = a :# f b
+onElemP c f ~(a :# b) | c         = f a :# b
+                      | otherwise = a :# f b
+
+-- -- Too strict:
+-- onElemP False f (a :# b) = f a :# b
+-- onElemP True  f (a :# b) = a :# f b
+
+-- onElemP False = \ f (a :# b) -> f a :# b
+-- onElemP True  = \ f (a :# b) -> a :# f b
 
 -- | Extract an element, indexing by 'False' for the first element and 'True'
 -- for the second.
