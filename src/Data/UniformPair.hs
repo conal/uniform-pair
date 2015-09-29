@@ -24,6 +24,7 @@ import Data.Functor ((<$>))
 import Data.Foldable (Foldable(..))
 import Data.Traversable (Traversable(..))
 import Control.Applicative (Applicative(..)) -- ,liftA2
+import Control.DeepSeq (NFData(..))
 
 import Text.ShowF (ShowF(..))
 
@@ -33,6 +34,9 @@ infix 1 :#
 data Pair a = a :# a deriving (Eq, Ord, Show, Functor, Foldable,Traversable)
 
 -- instance Traversable Pair where sequenceA (u :# v) = (:#) <$> u <*> v
+
+instance NFData a => NFData (Pair a) where
+    rnf (a :# b) = rnf a `seq` rnf b
 
 instance ShowF Pair where
   showsPrecF = showsPrec
@@ -89,8 +93,8 @@ onElemP c f ~(a :# b) | c         = f a :# b
 -- | Extract an element, indexing by 'False' for the first element and 'True'
 -- for the second.
 getP :: Bool -> Pair a -> a
-getP False (a :# _) = a
-getP True  (_ :# b) = b
+getP False = fstP
+getP True  = sndP
 
 -- Compare and swap
 compareSwap :: Ord a => Pair a -> Pair a
