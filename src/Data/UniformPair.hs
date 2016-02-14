@@ -15,6 +15,11 @@
 -- morphism principle.
 ----------------------------------------------------------------------
 
+-- TODO: Consider more lazy patterns so that we don't force the argument pair
+-- structure before revealing the result pair structure. Candidates: toP, fromP,
+-- update, mappend, (<*>), joinP, reverse, onElemP, and compareSwap. The mappend
+-- on (a,b) look like it has this same eager in base 4.8.
+
 module Data.UniformPair
   ( Pair(..), fstP,sndP, firstP, secondP, getP, onElemP, compareSwap
   ) where
@@ -48,8 +53,8 @@ sndP :: Pair a -> a
 sndP (_ :# b) = b
 
 firstP, secondP :: (a -> a) -> (Pair a -> Pair a)
-firstP  f (a :# b) = f a :# b
-secondP g (a :# b) = a :# g b
+firstP  f ~(a :# b) = f a :# b
+secondP g ~(a :# b) = a :# g b
 
 -- unzipP :: Functor f => f (Pair a) -> Pair (f a)
 -- unzipP ps = (fstP <$> ps) :# (sndP <$> ps)
