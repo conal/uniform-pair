@@ -21,7 +21,7 @@
 -- on (a,b) look like it has this same eager in base 4.8.
 
 module Data.UniformPair
-  ( Pair(..), fstP,sndP, firstP, secondP, getP, onElemP, compareSwap
+  ( Pair(..), fstP,sndP, firstP, secondP, getP, onElemP, swapP, compareSwap
   ) where
 
 import Data.Monoid (Monoid(..),(<>))
@@ -103,7 +103,7 @@ getP True  = sndP
 
 -- | Swap the elements of a 'Pair'
 swapP :: Pair a -> Pair a
-swapP (x :# y) = y :# x
+swapP (a :# b) = b :# a
 
 -- Compare and swap
 compareSwap :: Ord a => Pair a -> Pair a
