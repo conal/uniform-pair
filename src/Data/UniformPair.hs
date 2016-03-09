@@ -101,6 +101,10 @@ getP :: Bool -> Pair a -> a
 getP False = fstP
 getP True  = sndP
 
+-- | Swap the elements of a 'Pair'
+swapP :: Pair a -> Pair a
+swapP (x :# y) = y :# x
+
 -- Compare and swap
 compareSwap :: Ord a => Pair a -> Pair a
 compareSwap (a :# b) | a <= b    = a :# b
