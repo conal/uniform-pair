@@ -22,7 +22,7 @@ source-repository head
 Library
   hs-Source-Dirs:      src
   Extensions:
-  Build-Depends:       base<5, ShowF, deepseq
+  Build-Depends:       base<5, prelude-extras < 0.5, deepseq
   Exposed-Modules:     
                        Data.UniformPair
   ghc-options:         -Wall
