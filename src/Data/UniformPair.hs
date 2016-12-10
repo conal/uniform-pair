@@ -25,6 +25,7 @@ module Data.UniformPair
   ) where
 
 import Data.Monoid (Monoid(..))
+import Data.Semigroup (Semigroup (..))
 import Data.Functor ((<$>))
 import Data.Foldable (Foldable(..))
 import Data.Traversable (Traversable(..))
@@ -58,6 +59,9 @@ secondP g ~(a :# b) = a :# g b
 -- unzipP :: Functor f => f (Pair a) -> Pair (f a)
 -- unzipP ps = (fstP <$> ps) :# (sndP <$> ps)
 -- unzipP = liftA2 (:#) (fmap fstP) (fmap sndP)
+
+instance Semigroup a => Semigroup (Pair a) where
+  (a :# b) <> (c :# d) = (a <> c) :# (b <> d)
 
 instance Monoid a => Monoid (Pair a) where
   mempty = mempty :# mempty
