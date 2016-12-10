@@ -24,7 +24,7 @@ module Data.UniformPair
   ( Pair(..), fstP,sndP, firstP, secondP, getP, onElemP, swapP, compareSwap
   ) where
 
-import Data.Monoid (Monoid(..),(<>))
+import Data.Monoid (Monoid(..))
 import Data.Functor ((<$>))
 import Data.Foldable (Foldable(..))
 import Data.Traversable (Traversable(..))
@@ -61,7 +61,7 @@ secondP g ~(a :# b) = a :# g b
 
 instance Monoid a => Monoid (Pair a) where
   mempty = mempty :# mempty
-  (a :# b) `mappend` (c :# d) = (a <> c) :# (b <> d)  -- exchange
+  (a :# b) `mappend` (c :# d) = (a `mappend` c) :# (b `mappend` d)  -- exchange
 
 instance Applicative Pair where
   pure a = a :# a
