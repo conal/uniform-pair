@@ -32,7 +32,7 @@ import Data.Traversable (Traversable(..))
 import Control.Applicative (Applicative(..)) -- ,liftA2
 import Control.DeepSeq (NFData(..))
 
-import Prelude.Extras (Show1(..))
+import Prelude.Extras (Eq1, Ord1, Show1)
 
 infix 1 :#
 
@@ -44,6 +44,8 @@ data Pair a = a :# a deriving (Eq, Ord, Show, Functor, Foldable,Traversable)
 instance NFData a => NFData (Pair a) where
     rnf (a :# b) = rnf a `seq` rnf b
 
+instance Eq1 Pair
+instance Ord1 Pair
 instance Show1 Pair
 
 fstP :: Pair a -> a
