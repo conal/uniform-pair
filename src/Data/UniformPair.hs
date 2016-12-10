@@ -1,6 +1,16 @@
-{-# LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable #-}
+{-# LANGUAGE CPP, DeriveFunctor, DeriveFoldable, DeriveTraversable #-}
 {-# OPTIONS_GHC -Wall #-}
-
+#if MIN_VERSION_base(4,9,0)
+#define LIFTED_FUNCTOR_CLASSES 1
+#else
+#if MIN_VERSION_transformers(0,5,0)
+#define LIFTED_FUNCTOR_CLASSES 1
+#else
+#if MIN_VERSION_transformers_compat(0,5,0) && !MIN_VERSION_transformers(0,4,0)
+#define LIFTED_FUNCTOR_CLASSES 1
+#endif
+#endif
+#endif
 ----------------------------------------------------------------------
 -- |
 -- Module      :  Data.UniformPair
@@ -29,10 +39,11 @@ import Data.Semigroup (Semigroup (..))
 import Data.Functor ((<$>))
 import Data.Foldable (Foldable(..))
 import Data.Traversable (Traversable(..))
+import Data.Functor.Classes (Eq1(..), Ord1(..), Show1(..))
 import Control.Applicative (Applicative(..)) -- ,liftA2
 import Control.DeepSeq (NFData(..))
 
-import Prelude.Extras (Eq1, Ord1, Show1)
+import qualified Prelude.Extras as PE (Eq1, Ord1, Show1)
 
 infix 1 :#
 
@@ -44,9 +55,28 @@ data Pair a = a :# a deriving (Eq, Ord, Show, Functor, Foldable,Traversable)
 instance NFData a => NFData (Pair a) where
     rnf (a :# b) = rnf a `seq` rnf b
 
-instance Eq1 Pair
-instance Ord1 Pair
-instance Show1 Pair
+instance PE.Eq1 Pair
+instance PE.Ord1 Pair
+instance PE.Show1 Pair
+
+#if LIFTED_FUNCTOR_CLASSES
+instance Eq1 Pair where
+  liftEq eq (a :# b) (c :# d) = eq a c && eq b d
+
+instance Ord1 Pair where
+  liftCompare cmp (a :# b) (c :# d) = cmp a c `mappend` cmp b d
+
+instance Show1 Pair where
+  liftShowsPrec sp _sl d (a :# b) = showParen (d > 1) $
+    sp 2 a . showString " :# " . sp 2 b
+#else
+instance Eq1 Pair where
+  eq1 = (==)
+instance Ord1 Pair where
+  compare1 = compare
+instance Show1 Pair where
+  showsPrec1 = showsPrec
+#endif
 
 fstP :: Pair a -> a
 fstP (a :# _) = a

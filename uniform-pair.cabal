@@ -39,4 +39,4 @@ Library
                        Data.UniformPair
   ghc-options:         -Wall
   if !impl(ghc >= 8.0)
-    Build-Depends:     semigroups >= 0.18.2
+    Build-Depends:     semigroups >= 0.18.2, transformers >= 0.2, transformers-compat >= 0.4
