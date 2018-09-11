@@ -1,4 +1,5 @@
-{-# LANGUAGE CPP, DeriveFunctor, DeriveFoldable, DeriveTraversable #-}
+{-# LANGUAGE CPP, DeriveDataTypeable, DeriveFunctor, DeriveFoldable,
+             DeriveTraversable #-}
 {-# OPTIONS_GHC -Wall #-}
 #if MIN_VERSION_base(4,9,0)
 #define LIFTED_FUNCTOR_CLASSES 1
@@ -34,6 +35,7 @@ module Data.UniformPair
   ( Pair(..), fstP,sndP, firstP, secondP, getP, onElemP, swapP, compareSwap
   ) where
 
+import Data.Data (Data, Typeable)
 import Data.Monoid (Monoid(..))
 import Data.Semigroup (Semigroup (..))
 import Data.Functor ((<$>))
@@ -48,7 +50,8 @@ import qualified Prelude.Extras as PE (Eq1, Ord1, Show1)
 infix 1 :#
 
 -- | Uniform pairs
-data Pair a = a :# a deriving (Eq, Ord, Show, Functor, Foldable,Traversable)
+data Pair a = a :# a
+  deriving (Data, Eq, Ord, Show, Functor, Foldable, Traversable, Typeable)
 
 -- instance Traversable Pair where sequenceA (u :# v) = (:#) <$> u <*> v
 
