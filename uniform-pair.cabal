@@ -1,5 +1,5 @@
 Name:                uniform-pair
-Version:             0.1.14
+Version:             0.1.15
 Cabal-Version:       >= 1.6
 Synopsis:            Uniform pairs with class instances
 Category:            Data
@@ -19,6 +19,8 @@ Stability:           experimental
 build-type:          Simple
 data-files:          changelog
 tested-with:
+  GHC==8.4.3,
+  GHC==8.2.2,
   GHC==8.0.2,
   GHC==7.10.3,
   GHC==7.8.4,
@@ -35,6 +37,7 @@ Library
   hs-Source-Dirs:      src
   Extensions:
   Build-Depends:       base<5, prelude-extras < 0.5, deepseq
+                     , distributive, adjunctions
   Exposed-Modules:
                        Data.UniformPair
   ghc-options:         -Wall

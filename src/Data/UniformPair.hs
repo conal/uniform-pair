@@ -1,6 +1,12 @@
-{-# LANGUAGE CPP, DeriveDataTypeable, DeriveFunctor, DeriveFoldable,
-             DeriveTraversable #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE DeriveFunctor #-}
+{-# LANGUAGE DeriveFoldable #-}
+{-# LANGUAGE DeriveTraversable #-}
+{-# LANGUAGE TypeFamilies #-}
+
 {-# OPTIONS_GHC -Wall #-}
+
 #if MIN_VERSION_base(4,9,0)
 #define LIFTED_FUNCTOR_CLASSES 1
 #else
@@ -12,6 +18,7 @@
 #endif
 #endif
 #endif
+
 ----------------------------------------------------------------------
 -- |
 -- Module      :  Data.UniformPair
@@ -44,6 +51,8 @@ import Data.Traversable (Traversable(..))
 import Data.Functor.Classes (Eq1(..), Ord1(..), Show1(..))
 import Control.Applicative (Applicative(..)) -- ,liftA2
 import Control.DeepSeq (NFData(..))
+import Data.Distributive (Distributive(..))
+import Data.Functor.Rep (Representable(..),distributeRep)
 
 import qualified Prelude.Extras as PE (Eq1, Ord1, Show1)
 
@@ -119,6 +128,15 @@ joinP ((a :# _) :# (_ :# d)) = a :# d
 --    where
 --      (c :# _) = f a
 --      (_ :# d) = f b
+
+instance Distributive Pair where
+  distribute = distributeRep
+
+instance Representable Pair where
+  type Rep Pair = Bool
+  tabulate f = f False :# f True
+  index (f :# _) False = f
+  index (_ :# t) True  = t
 
 -- | Update a component, indexing by 'False' for the first element and 'True' for
 -- the second.
